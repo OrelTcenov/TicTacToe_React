@@ -23,22 +23,25 @@ const Game = () => {
 
     if (submit) {
       while (copySquares.length) {
+        //Create 2D array
         newArr.push(copySquares.splice(0, boardSize));
       }
 
       //Gets all the win scenarios
       for (var i = 0; i < boardSize; i++) {
-        winLines.push(newArr[i]);
-        winLines.push(arrayColumn(newArr, i));
+        winLines.push(newArr[i]); //Rows
+        winLines.push(arrayColumn(newArr, i)); //Columns
+        //Diagonals
         temp.push(newArr[i][i]);
         temp2.push(newArr[i][index--]);
       }
       winLines.push(temp);
       winLines.push(temp2);
+
       for (var j = 0; j < winLines.length; j++) {
         if (allEqual(winLines[j])) {
           if (winLines[j][0] != null) {
-            return winLines[j][0];
+            return winLines[j][0]; //Return the winner (X or O)
           }
         } else if (stepNumber === boardSize * boardSize) {
           return "Draw";
@@ -48,19 +51,21 @@ const Game = () => {
     return null;
   };
   const winner = checkWinner(board[stepNumber]);
+
   const handleClick = (i) => {
     const boardPlace = board.slice(0, stepNumber + 1);
     const current = boardPlace[stepNumber];
     const squares = [...current];
 
     if (winner && squares[i]) return;
+    //If square is already taken
     if (squares[i]) {
       alert("Already taken"); //Alert if square is taken
       return;
     }
     if (winner) return;
 
-    // select square
+    //Select square
     squares[i] = xO;
     setBoard([...boardPlace, squares]);
     setStepNumber(boardPlace.length);
